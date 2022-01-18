@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>LOTRO Ratings Calculator</title>
+	<script src="./js/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+<header>
+	<div id="banner-area">
+		<div id="title-banner"></div>
+	</div>
+</header>
+<main>
+	<div id="notes" hidden>
+		<div class="popupframe">
+			<div class="pu-topl"></div>
+			<div class="pu-topm"></div>
+			<div class="pu-topr"><div class="closebtn" onclick="CloseNotes()"></div></div>
+			<div class="pu-midl"></div>
+			<div class="pu-midm">
+				<div id="notes-text">
+<h1>Welcome to the LOTRO Ratings Calculator!</h1>
+<p>This tool can be used in multiple ways and it works on any level:<p>
+<h2>Basic functionality:</h2>
+<p>1) calculate rating to percentage: number columns 1 & 2. enter rating in 1 and percentage shows in 2.<br />
+2) calculate percentage to rating: number columns 3 & 4. enter percentage in 3 and rating shows in 4.<br />
+3) shows a graph of the rating to percentage formula for visual information with cap percentage and cap rating.</p>
+<h2>Planning:</h2>
+<p>If you see the entered rating in number column 1 as your 'current' rating and the percentage in column 3 as your 'target' percentage (with target rating in column 4) then column 5 shows the rating difference which can be negative (red, below target) or positive (blue, above target).<br />
+In the graph the current amount shows as green color, the (negative) amount under target as red, the (positive) amount above target as blue and any remainder to cap as grey.</p>
+<h2>Advanced, simulation:</h2>
+<p>Here it gets tricky. The basic information like in the character window in-game provides only information 'on-level' and it doesn't show rating penetrations from mobs (an effect they have in all t2 and higher instance/raid tiers and also in Anvil T1).<br />
+If you want to calculate rating and percentages for real situations / fights then you have to take into account the level differences and penetration values. Sadly, not much information is given about this from official sources.</p>
+<p>For level we can distinquise:<br />
+- character level<br />
+- mob level<br />
+- calculation level</p>
+<p>Calculation level depends on the percentage stat. Not much is known about this. Is it equal to character level or the mob's level? I only know for sure that for mitigation percentage stats this is the highest of those two. For mitigations this means that:<br />
+1) if your character level is lower than the mob's level then you need to set calculation level (menu bar: shield) to the mobs level.<br />
+2) if your character level is equal or higher than the mob's level then you can keep your character's level for calculation level.<p>
+<p>Rating penetration effects are always calculated from the mob's level. In regarding to the penetrations menu - the calculator doesn't provide a means to set mob level directly, but the menu gives you some options:<br />
+1) no penetrations: Landscape, T1.<br />
+2) on-level fights, so character level = mob level = calculation level: Tier 2 or Tier 3(and higher).<br />
+3) non scalable raids: Rift, ToO, Throne, Abyss, Anvil. for these the mob's level for penetrations is shown in the menu (like 108 for Throne). This mob level is based on the highest boss in those raids.</p>
+<h3>So for ToO T2 Saruman lvl 78 as example:</h3>
+<p>1) decide which percentage stat you want to calculate with.<br />
+2) if it's mitigations then: are you higher in level than lvl78? -> use your own level. are you lower in level? -> use lvl78 for the level setting.<br />
+3) just use your character level for the other percentage stats..(?)<br />
+4) for penetration you need mob level 78, so you choose the ToO option from the penetation menu.</p>
+<h3>Example: Glimmerdeep T4 lvl 120 mobs:</h3>
+<p>1) decide which percentage stat you want to calculate with.<br />
+2) if it's mitigations then: are you higher in level than lvl120? -> use your own level. are you lower in level? -> use lvl120 for the level setting.<br />
+3) just use your character level for the other percentage stats..(?)<br />
+4) for penetrations, the only option is to choose on-level Tier 3. so you can't calculate those correctly if you're not 120 in this situation.</p>
+<h2>Note:</h2>
+<p>Rating penetrations affect the cap ratings, because you need to compensate for them to reach the same percentages.<br />
+Calculations work like:<br />
+1) rating to percentage - penetration value is added (negative value) to current rating and from there a percentage is calculated.<br />
+2) percentage to rating - rating is calculated from percentage and from this rating the penetration value is substracted (results in addition).<br />
+3) cap information - cap rating information shows with penetration rating compensation.</p>
+				</div>
+			</div>
+			<div class="pu-midr"></div>
+			<div class="pu-botl"></div>
+			<div class="pu-botm"></div>
+			<div class="pu-botr"></div>
+		</div>
+	</div>
+    <div id="calc">
+		<div class="top-div"></div>
+		<div class="nav-bar">
+			<ul class="actions">
+				<li class="selection">
+					<div id="selitem-class" onclick="MakeSelection('class')" title="Select your class.">
+						<img id="class-symb" src="./images/classes/beorning.png">
+						<div id="class-name">Beorning</div>
+					</div>
+				</li>
+				<li class="selection">
+					<div id="selitem-level" onclick="MakeSelection('level')" title="Select your level.">
+						<div id="level-number"></div>
+						<img id="level-deco" src="./images/leveldeco.png">
+					</div>
+				</li>
+				<li class="selection">
+					<div id="selitem-pen" onclick="MakeSelection('pen')" title="Select rating penetration setting.">
+						<div id="pen-desc">Landscape</div>
+						<img id="pen-slot" src="./images/penslotempty.png">
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="bottom-div"></div>
+		<div id="calcbkg">
+			<div class="gridframe">
+				<div class="gf-topl"></div>
+				<div class="gf-topm"></div>
+				<div class="gf-topr"><div class="notesbtn" onclick="ShowNotes()" title="Notes."></div></div>
+				<div class="gf-midl"></div>
+				<div class="gf-midm">
+					<form id="calcform">
+						<p id="perclabelhdr" class="colhdr hdrrow"></p>
+						<p id="currrathdr" class="colhdr hdrrow" title="Enter (current) rating in this column and the percentage will be calculated.">enter #</p>
+						<p id="currperchdr" class="colhdr hdrrow" title="The percentage calculated from the entered rating in the column to the left.">&rarr; %</p>
+						<p id="targperchdr" class="colhdr hdrrow" title="Enter a (target) percentage in this column and the required rating will be calculated.">enter %</p>
+						<p id="targrathdr" class="colhdr hdrrow" title="The rating calculated from the entered percentage in the column to the left.">&rarr; #</p>
+						<p id="ratdiffhdr" class="colhdr hdrrow" title="The difference between entered (current) rating and calculated (target) rating.">diff. #</p>
+						<p id="offencehdr" class="stathdr">Offence</p>
+						<p id="offencesep" class="sep"></p>
+						<label id="crithitlbl" class="perclabel crithitrow" for="crithitcurrrat">Critical Hit</label>
+						<div id="crithitlockedbtn" class="lockedbtn crithitrow" onclick="ProcessLockedBtn(this)" title="Click to ungroup."></div>
+						<div id="crithitunlockedbtn" class="unlockedbtn crithitrow" style="display:none" onclick="ProcessUnlockedBtn(this)" title="Click to group."></div>
+						<input id="crithitcurrrat" class="currrat crithitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" autofocus>
+						<div id="crithitcurrperc" class="currperc crithitrow">100.0%</div>
+						<input id="crithittargperc" class="targperc crithitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="crithittargrat" class="targrat crithitrow">0</p>
+						<p id="crithitratdiff" class="ratdiff crithitrow">0</p>
+						<label id="devhitlbl" class="perclabel devhitrow" for="devhitcurrrat">- Devastate</label>
+						<input id="devhitcurrrat" class="currrat devhitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="devhitcurrperc" class="currperc devhitrow">0.0%</p>
+						<input id="devhittargperc" class="targperc devhitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="devhittargrat" class="targrat devhitrow">0</p>
+						<p id="devhitratdiff" class="ratdiff devhitrow">0</p>
+						<label id="critmagnlbl" class="perclabel critmagnrow" for="critmagncurrrat">- Magnitude</label>
+						<input id="critmagncurrrat" class="currrat critmagnrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="critmagncurrperc" class="currperc critmagnrow">0.0%</p>
+						<input id="critmagntargperc" class="targperc critmagnrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="critmagntargrat" class="targrat critmagnrow">0</p>
+						<p id="critmagnratdiff" class="ratdiff critmagnrow">0</p>
+						<label id="finesselbl" class="perclabel finesserow" for="finessecurrrat">Finesse</label>
+						<input id="finessecurrrat" class="currrat finesserow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="finessecurrperc" class="currperc finesserow">0.0%</p>
+						<input id="finessetargperc" class="targperc finesserow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="finessetargrat" class="targrat finesserow">0</p>
+						<p id="finesseratdiff" class="ratdiff finesserow">0</p>
+						<label id="phydmglbl" class="perclabel phydmgrow" for="phydmgcurrrat">Physical Mastery</label>
+						<input id="phydmgcurrrat" class="currrat phydmgrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="phydmgcurrperc" class="currperc phydmgrow">0.0%</p>
+						<input id="phydmgtargperc" class="targperc phydmgrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="phydmgtargrat" class="targrat phydmgrow">0</p>
+						<p id="phydmgratdiff" class="ratdiff phydmgrow">0</p>
+						<label id="tacdmglbl" class="perclabel tacdmgrow" for="tacdmgcurrrat">Tactical Mastery</label>
+						<div id="tacdmglockedbtn" class="lockedbtn tacdmgrow" onclick="ProcessLockedBtn(this)" title="Click to ungroup."></div>
+						<div id="tacdmgunlockedbtn" class="unlockedbtn tacdmgrow" style="display:none" onclick="ProcessUnlockedBtn(this)" title="Click to group."></div>
+						<input id="tacdmgcurrrat" class="currrat tacdmgrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="tacdmgcurrperc" class="currperc tacdmgrow">0.0%</p>
+						<input id="tacdmgtargperc" class="targperc tacdmgrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="tacdmgtargrat" class="targrat tacdmgrow">0</p>
+						<p id="tacdmgratdiff" class="ratdiff tacdmgrow">0</p>
+						<label id="outheallbl" class="perclabel outhealrow" for="outhealcurrrat">- Healing</label>
+						<input id="outhealcurrrat" class="currrat outhealrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="outhealcurrperc" class="currperc outhealrow">0.0%</p>
+						<input id="outhealtargperc" class="targperc outhealrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="outhealtargrat" class="targrat outhealrow">0</p>
+						<p id="outhealratdiff" class="ratdiff outhealrow">0</p>
+						<p id="defencehdr" class="stathdr">Defence</p>
+						<p id="defencesep" class="sep"></p>
+						<label id="resistlbl" class="perclabel resistrow" for="resistcurrrat">Resistance</label>
+						<input id="resistcurrrat" class="currrat resistrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="resistcurrperc" class="currperc resistrow">0.0%</p>
+						<input id="resisttargperc" class="targperc resistrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="resisttargrat" class="targrat resistrow">0</p>
+						<p id="resistratdiff" class="ratdiff resistrow">0</p>
+						<label id="critdeflbl" class="perclabel critdefrow" for="critdefcurrrat">Critical Defence</label>
+						<input id="critdefcurrrat" class="currrat critdefrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="critdefcurrperc" class="currperc critdefrow">0.0%</p>
+						<input id="critdeftargperc" class="targperc critdefrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="critdeftargrat" class="targrat critdefrow">0</p>
+						<p id="critdefratdiff" class="ratdiff critdefrow">0</p>
+						<label id="inheallbl" class="perclabel inhealrow" for="inhealcurrrat">Incoming Healing</label>
+						<input id="inhealcurrrat" class="currrat inhealrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="inhealcurrperc" class="currperc inhealrow">0.0%</p>
+						<input id="inhealtargperc" class="targperc inhealrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="inhealtargrat" class="targrat inhealrow">0</p>
+						<p id="inhealratdiff" class="ratdiff inhealrow">0</p>
+						<p id="avoidancehdr" class="stathdr">Avoidance</p>
+						<p id="avoidancesep" class="sep"></p>
+						<label id="blocklbl" class="perclabel blockrow" for="blockcurrrat">Block</label>
+						<div id="blocklockedbtn" class="lockedbtn blockrow" onclick="ProcessLockedBtn(this)" title="Click to ungroup."></div>
+						<div id="blockunlockedbtn" class="unlockedbtn blockrow" style="display:none" onclick="ProcessUnlockedBtn(this)" title="Click to group."></div>
+						<input id="blockcurrrat" class="currrat blockrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="blockcurrperc" class="currperc blockrow">0.0%</p>
+						<input id="blocktargperc" class="targperc blockrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="blocktargrat" class="targrat blockrow">0</p>
+						<p id="blockratdiff" class="ratdiff blockrow">0</p>
+						<label id="partblocklbl" class="perclabel partblockrow" for="partblockcurrrat">- Partial</label>
+						<input id="partblockcurrrat" class="currrat partblockrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="partblockcurrperc" class="currperc partblockrow">0.0%</p>
+						<input id="partblocktargperc" class="targperc partblockrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="partblocktargrat" class="targrat partblockrow">0</p>
+						<p id="partblockratdiff" class="ratdiff partblockrow">0</p>
+						<label id="partblockmitlbl" class="perclabel partblockmitrow" for="partblockmitcurrrat">- Partial Mitigation</label>
+						<input id="partblockmitcurrrat" class="currrat partblockmitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="partblockmitcurrperc" class="currperc partblockmitrow">0.0%</p>
+						<input id="partblockmittargperc" class="targperc partblockmitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="partblockmittargrat" class="targrat partblockmitrow">0</p>
+						<p id="partblockmitratdiff" class="ratdiff partblockmitrow">0</p>
+						<label id="parrylbl" class="perclabel parryrow" for="parrycurrrat">Parry</label>
+						<div id="parrylockedbtn" class="lockedbtn parryrow" onclick="ProcessLockedBtn(this)" title="Click to ungroup."></div>
+						<div id="parryunlockedbtn" class="unlockedbtn parryrow" style="display:none" onclick="ProcessUnlockedBtn(this)" title="Click to group."></div>
+						<input id="parrycurrrat" class="currrat parryrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="parrycurrperc" class="currperc parryrow">0.0%</p>
+						<input id="parrytargperc" class="targperc parryrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="parrytargrat" class="targrat parryrow">0</p>
+						<p id="parryratdiff" class="ratdiff parryrow">0</p>
+						<label id="partparrylbl" class="perclabel partparryrow" for="partparrycurrrat">- Partial</label>
+						<input id="partparrycurrrat" class="currrat partparryrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="partparrycurrperc" class="currperc partparryrow">0.0%</p>
+						<input id="partparrytargperc" class="targperc partparryrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="partparrytargrat" class="targrat partparryrow">0</p>
+						<p id="partparryratdiff" class="ratdiff partparryrow">0</p>
+						<label id="partparrymitlbl" class="perclabel partparrymitrow" for="partparrymitcurrrat">- Partial Mitigation</label>
+						<input id="partparrymitcurrrat" class="currrat partparrymitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="partparrymitcurrperc" class="currperc partparrymitrow">0.0%</p>
+						<input id="partparrymittargperc" class="targperc partparrymitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="partparrymittargrat" class="targrat partparrymitrow">0</p>
+						<p id="partparrymitratdiff" class="ratdiff partparrymitrow">0</p>
+						<label id="evadelbl" class="perclabel evaderow" for="evadecurrrat">Evade</label>
+						<div id="evadelockedbtn" class="lockedbtn evaderow" onclick="ProcessLockedBtn(this)" title="Click to ungroup."></div>
+						<div id="evadeunlockedbtn" class="unlockedbtn evaderow" style="display:none" onclick="ProcessUnlockedBtn(this)" title="Click to group."></div>
+						<input id="evadecurrrat" class="currrat evaderow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="evadecurrperc" class="currperc evaderow">0.0%</p>
+						<input id="evadetargperc" class="targperc evaderow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="evadetargrat" class="targrat evaderow">0</p>
+						<p id="evaderatdiff" class="ratdiff evaderow">0</p>
+						<label id="partevadelbl" class="perclabel partevaderow" for="partevadecurrrat">- Partial</label>
+						<input id="partevadecurrrat" class="currrat partevaderow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="partevadecurrperc" class="currperc partevaderow">0.0%</p>
+						<input id="partevadetargperc" class="targperc partevaderow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="partevadetargrat" class="targrat partevaderow">0</p>
+						<p id="partevaderatdiff" class="ratdiff partevaderow">0</p>
+						<label id="partevademitlbl" class="perclabel partevademitrow" for="partevademitcurrrat">- Partial Mitigation</label>
+						<input id="partevademitcurrrat" class="currrat partevademitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="partevademitcurrperc" class="currperc partevademitrow">0.0%</p>
+						<input id="partevademittargperc" class="targperc partevademitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="partevademittargrat" class="targrat partevademitrow">0</p>
+						<p id="partevademitratdiff" class="ratdiff partevademitrow">0</p>
+						<p id="mitigationshdr" class="stathdr">Mitigations</p>
+						<p id="mitigationssep" class="sep"></p>
+						<label id="phymitlbl" class="perclabel phymitrow" for="phymitcurrrat">Physical</label>
+						<div id="phymitlockedbtn" class="lockedbtn phymitrow" onclick="ProcessLockedBtn(this)" title="Click to ungroup."></div>
+						<div id="phymitunlockedbtn" class="unlockedbtn phymitrow" style="display:none" onclick="ProcessUnlockedBtn(this)" title="Click to group."></div>
+						<input id="phymitcurrrat" class="currrat phymitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="phymitcurrperc" class="currperc phymitrow">0.0%</p>
+						<input id="phymittargperc" class="targperc phymitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="phymittargrat" class="targrat phymitrow">0</p>
+						<p id="phymitratdiff" class="ratdiff phymitrow">0</p>
+						<label id="ofmitlbl" class="perclabel ofmitrow" for="ofmitcurrrat">- Orc-craft/Fell-Wrought</label>
+						<input id="ofmitcurrrat" class="currrat ofmitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)" disabled>
+						<p id="ofmitcurrperc" class="currperc ofmitrow">0.0%</p>
+						<input id="ofmittargperc" class="targperc ofmitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="ofmittargrat" class="targrat ofmitrow">0</p>
+						<p id="ofmitratdiff" class="ratdiff ofmitrow">0</p>
+						<label id="tacmitlbl" class="perclabel tacmitrow" for="tacmitcurrrat">Tactical</label>
+						<input id="tacmitcurrrat" class="currrat tacmitrow" type="text" value="0" pattern="[0-9]+" onchange="ProcessCurrRat(this)">
+						<p id="tacmitcurrperc" class="currperc tacmitrow">0.0%</p>
+						<input id="tacmittargperc" class="targperc tacmitrow" type="text" value="0.0%" pattern="[0-9.%]+" onchange="ProcessTargPerc(this)">
+						<p id="tacmittargrat" class="targrat tacmitrow">0</p>
+						<p id="tacmitratdiff" class="ratdiff tacmitrow">0</p>
+					</form>
+				</div>
+				<div class="gf-midr"></div>
+				<div class="gf-botl"></div>
+				<div class="gf-botm"></div>
+				<div class="gf-botr"></div>
+			</div>
+		</div>
+    </div>
+    <div id="graph">
+		<div class="top-div"></div>
+		<div class="nav-bar">
+			<ul class="actions">
+				<li class="selection">
+					<div id="selitem-graph" onclick="MakeSelection('graph')" title="Select percentage graph.">
+						<img id="perc-deco" src="./images/percdeco1.png">
+						<div id="perc-name">Critical Hit Chance</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="bottom-div"></div>
+		<div id="graphbkg">
+			<div class="gridframe">
+				<div class="gf-topl"></div>
+				<div class="gf-topm"></div>
+				<div class="gf-topr"></div>
+				<div class="gf-midl"></div>
+				<div class="gf-midm">
+					<div id="graphcontainer" data-lblcapinfo=" - Cap: #capperc% (#caprat)" data-lblremaining="Remaining" data-lblundertarget="Under Target" data-lblabovetarget="Above Target" data-lblcurrent="Current" data-lblperc="Percentage %" data-lblrating="Rating #">
+						<canvas id="graphcanvas" role="img"></canvas>
+					</div>
+				</div>
+				<div class="gf-midr"></div>
+				<div class="gf-botl"></div>
+				<div class="gf-botm"></div>
+				<div class="gf-botr"></div>
+			</div>
+		</div>
+    </div>
+    <div id="popup" hidden>
+		<div class="popupframe">
+			<div class="pu-topl"></div>
+			<div class="pu-topm"></div>
+			<div class="pu-topr"><div class="closebtn" onclick="CloseSelection()"></div></div>
+			<div class="pu-midl"></div>
+			<div class="pu-midm">
+				<div id="pu-sel-class" hidden>
+					<p class="sel-info">Select your class:<p>
+					<ul id="class-sel-list">
+						<li onclick="SelectClass('beorning')" data-classname="beorning">
+							<img src="./images/classes/beorning.png">
+							<div>Beorning</div>
+						</li>
+						<li onclick="SelectClass('brawler')" data-classname="brawler">
+							<img src="./images/classes/brawler.png">
+							<div>Brawler</div>
+						</li>
+						<li onclick="SelectClass('burglar')" data-classname="burglar">
+							<img src="./images/classes/burglar.png">
+							<div>Burglar</div>
+						</li>
+						<li onclick="SelectClass('captain')" data-classname="captain">
+							<img src="./images/classes/captain.png">
+							<div>Captain</div>
+						</li>
+						<li onclick="SelectClass('champion')" data-classname="champion">
+							<img src="./images/classes/champion.png">
+							<div>Champion</div>
+						</li>
+						<li onclick="SelectClass('guardian')" data-classname="guardian">
+							<img src="./images/classes/guardian.png">
+							<div>Guardian</div>
+						</li>
+						<li onclick="SelectClass('hunter')" data-classname="hunter">
+							<img src="./images/classes/hunter.png">
+							<div>Hunter</div>
+						</li>
+						<li onclick="SelectClass('loremaster')" data-classname="loremaster">
+							<img src="./images/classes/loremaster.png">
+							<div>Lore-master</div>
+						</li>
+						<li onclick="SelectClass('minstrel')" data-classname="minstrel">
+							<img src="./images/classes/minstrel.png">
+							<div>Minstrel</div>
+						</li>
+						<li onclick="SelectClass('runekeeper')" data-classname="runekeeper">
+							<img src="./images/classes/runekeeper.png">
+							<div>Rune-keeper</div>
+						</li>
+						<li onclick="SelectClass('warden')" data-classname="warden">
+							<img src="./images/classes/warden.png">
+							<div>Warden</div>
+						</li>
+					</ul>
+				</div>
+				<div id="pu-sel-level" hidden>
+					<p class="sel-info">Select your level:<p>
+					<form id="level-sel-form">
+						 <input id="level-sel-range" type="range" onmouseup="SelectLevel(this.value)" oninput="LvlRangeUpdate(this.value)"> 
+					</form>
+				</div>
+				<div id="pu-sel-pen" hidden>
+					<p class="sel-info">Select penetration setting:<p>
+					<ul id="pen-sel-list">
+						<li onclick="SelectPen('nopen')" data-penname="nopen" data-pentype="none" data-pentitle="no penetrations">
+							<span>
+								<p>Landscape</p>
+								<img src="./images/penslotempty.png">
+								<p>No penetrations: landscape, T1</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('onlvl2')" data-penname="onlvl2" data-pentype="hidden2" data-penlevel="onlvl" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>On-level T2</p>
+								<img src="./images/penslotactive.png">
+								<p>Tier 2(hidden): all T2, no skirms</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('onlvl3')" data-penname="onlvl3" data-pentype="hidden3" data-penlevel="onlvl" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>On-level T3-5</p>
+								<img src="./images/penslotactive.png">
+								<p>Tier 3(hidden): all T3-5, no skirms</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('rift2')" data-penname="rift2" data-pentype="hidden2" data-penlevel="54" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>Rift T2</p>
+								<img src="./images/penslotactive.png">
+								<p>Tier 2(hidden): mob level 54</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('rift3')" data-penname="rift3" data-pentype="hidden3" data-penlevel="54" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>Rift T3</p>
+								<img src="./images/penslotactive.png">
+								<p>Tier 3(hidden): mob level 54</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('too2')" data-penname="too2" data-pentype="hidden2" data-penlevel="78" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>ToO T2</p>
+								<img src="./images/penslotactive.png">
+								<p>Tier 2(hidden): mob level 78</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('throne2')" data-penname="throne2" data-pentype="hidden2" data-penlevel="108" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>Throne T2</p>
+								<img src="./images/penslotactive.png">
+								<p>Tier 2(hidden): mob level 108</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('abyss2')" data-penname="abyss2" data-pentype="enhiii" data-penlevel="115" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>Abyss T2</p>
+								<img src="./images/penslotactive.png">
+								<p>Enhancement III: mob level 115</p>
+							</span>
+						</li>
+						<li class="pen-sep"> </li>
+						<li onclick="SelectPen('anvil')" data-penname="anvil" data-pentype="enhiii" data-penlevel="120" data-pentitle="#bpepen Block Penetration&#13&#10#bpepen Parry Penetration&#13&#10#bpepen Evade Penetration&#13&#10#resistpen Resistance Penetration&#13&#10#armourpen Penetrate Armour">
+							<span>
+								<p>Anvil T1-3</p>
+								<img src="./images/penslotactive.png">
+								<p>Enhancement III: mob level 120</p>
+							</span>
+						</li>
+					</ul>
+				</div>
+				<div id="pu-sel-graph" hidden>
+					<p class="sel-info">Select percentage graph:<p>
+					<ul id="graph-sel-list">
+						<li onclick="SelectGraph('crithit')" data-percname="crithit">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Critical Hit Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('devhit')" data-percname="devhit">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Devastating Hit Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('critmagn')" data-percname="critmagn">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Critical/Devastating Hit Magnitude</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('finesse')" data-percname="finesse">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Finesse</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('phydmg')" data-percname="phydmg">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Physical Damage</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('tacdmg')" data-percname="tacdmg">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Tactical Damage</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('outheal')" data-percname="outheal">
+							<span>
+								<img src="./images/percdeco1.png">
+								<p>Outgoing Healing</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('resist')" data-percname="resist">
+							<span>
+								<img src="./images/percdeco2.png">
+								<p>Resistance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('critdef')" data-percname="critdef">
+							<span>
+								<img src="./images/percdeco2.png">
+								<p>Critical Defence</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('inheal')" data-percname="inheal">
+							<span>
+								<img src="./images/percdeco2.png">
+								<p>Incoming Healing</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('block')" data-percname="block">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Block Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('partblock')" data-percname="partblock">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Partial Block Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('partblockmit')" data-percname="partblockmit">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Partial Block Mitigation</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('parry')" data-percname="parry">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Parry Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('partparry')" data-percname="partparry">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Partial Parry Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('partparrymit')" data-percname="partparrymit">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Partial Parry Mitigation</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('evade')" data-percname="evade">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Evade Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('partevade')" data-percname="partevade">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Partial Evade Chance</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('partevademit')" data-percname="partevademit">
+							<span>
+								<img src="./images/percdeco3.png">
+								<p>Partial Evade Mitigation</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('phymit')" data-percname="phymit">
+							<span>
+								<img src="./images/percdeco4.png">
+								<p>Physical Mitigation</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('ofmit')" data-percname="ofmit">
+							<span>
+								<img src="./images/percdeco4.png">
+								<p>Orc-craft/Fell-Wrought Mitigation</p>
+							</span>
+						</li>
+						<li onclick="SelectGraph('tacmit')" data-percname="tacmit">
+							<span>
+								<img src="./images/percdeco4.png">
+								<p>Tactical Mitigation</p>
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="pu-midr"></div>
+			<div class="pu-botl"></div>
+			<div class="pu-botm"></div>
+			<div class="pu-botr"></div>
+		</div>
+    </div>
+</main>
+<footer>
+	<div class="top-div"></div>
+	<div id="poweredbycs"><span>Powered by</span> <a href="https://www.lotrointerface.com/downloads/info1022-CalcStat.html" target="_blank">CalcStat</a> <span id="cs-version">v0.0.0p</span></div>
+	<div id="madeby"><span id="bygiseldah">v1.3.0b2 by Giseldah</span> <div id="donatebtn">
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick" />
+<input type="hidden" name="hosted_button_id" value="A6JQLXZ5WF9BC" />
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="Pay me a cup of coffee or something. :)" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+</form>
+		</div>
+	</div>
+</footer>
+<script src="./js/calcstat.js"></script>
+<script src="./js/ratcalc.js"></script>
+</body>
+</html>
