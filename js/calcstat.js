@@ -20,14 +20,14 @@ function CalcStat(SName, SLvl, SParam)
 	}
 
 	if (SN < "PARRYPRATP") {
-		if (SN < "EVADEPRATPCAPR") {
-			if (SN < "CHAMPIONCDCANBLOCK") {
+		if (SN < "EVADEPRATPCAP") {
+			if (SN < "CHAMPIONCDARMOURTYPE") {
 				if (SN < "BPEPRATPCAP") {
 					if (SN < "BLOCKPRATPB") {
 						if (SN < "BEORNINGCDCANBLOCK") {
 							if (SN < "ARMOURPENT") {
 								if (SN == "-VERSION") {
-									return "2.2p";
+									return "2.2.1p";
 								} else {
 									return 0;
 								}
@@ -119,7 +119,7 @@ function CalcStat(SName, SLvl, SParam)
 										return 0;
 									}
 								} else if (SN == "BPEPRATPB") {
-									return CalcStat("BRatRounded",L,"BRatLow");
+									return CalcStat("BRatRounded",L,"BRatStandard");
 								} else {
 									return 0;
 								}
@@ -134,7 +134,7 @@ function CalcStat(SName, SLvl, SParam)
 					}
 				} else if (SN > "BPEPRATPCAP") {
 					if (SN < "BRATPARTBPE") {
-						if (SN < "BRATLOW") {
+						if (SN < "BRATEXTRA") {
 							if (SN < "BPET") {
 								if (SN == "BPEPRATPCAPR") {
 									return CalcStat("BPEPRatPB",L)*CalcStat("BPEPRatPC",L);
@@ -143,7 +143,7 @@ function CalcStat(SName, SLvl, SParam)
 								}
 							} else if (SN > "BPET") {
 								if (SN > "BRATCRITMAGN") {
-									if (SN == "BRATHIGH") {
+									if (SN == "BRATDEVHIT") {
 										if (Lm <= 50) {
 											return LinFmod(1,400,4000,1,50,L);
 										} else if (Lm <= 60) {
@@ -208,137 +208,137 @@ function CalcStat(SName, SLvl, SParam)
 							} else {
 								return StatLinInter("PntMPBPE","TraitProg","ProgBBPE","",L,N,0);
 							}
-						} else if (SN > "BRATLOW") {
-							if (SN < "BRATMITHEAVY") {
-								if (SN == "BRATMEDIUM") {
-									if (Lm <= 50) {
-										return LinFmod(1,300,3000,1,50,L);
-									} else if (Lm <= 60) {
-										return LinFmod(1,3000,4500,50,60,L);
-									} else if (Lm <= 65) {
-										return LinFmod(1,4500,6000,60,65,L);
-									} else if (Lm <= 75) {
-										return LinFmod(1,6000,9000,65,75,L);
-									} else if (Lm <= 85) {
-										return LinFmod(1,9000,13500,75,85,L);
-									} else if (Lm <= 95) {
-										return LinFmod(1,13500,19500,85,95,L);
-									} else if (Lm <= 100) {
-										return LinFmod(1,19500,27100,95,100,L);
-									} else if (Lm <= 105) {
-										return LinFmod(1,27100,36000,100,105,L);
-									} else if (Lm <= 115) {
-										return LinFmod(1,40000,54000,106,115,L);
-									} else if (Lm <= 120) {
-										return LinFmod(1,62000,68000,116,120,L);
-									} else if (Lm <= 130) {
-										return LinFmod(1,78000,102000,121,130,L);
-									} else if (Lm <= 140) {
-										return LinFmod(1,117000,204000,131,140,L);
-									} else {
-										return LinFmod(1,235000,410000,141,150,L);
-									}
+						} else if (SN > "BRATEXTRA") {
+							if (SN < "BRATMITLIGHT") {
+								if (SN == "BRATMITHEAVY") {
+									return CalcStat("BRatStandard",L);
 								} else {
 									return 0;
 								}
-							} else if (SN > "BRATMITHEAVY") {
-								if (SN > "BRATMITLIGHT") {
-									if (SN == "BRATMITMEDIUM") {
+							} else if (SN > "BRATMITLIGHT") {
+								if (SN > "BRATMITMEDIUM") {
+									if (SN == "BRATOUTHEAL") {
 										if (Lm <= 50) {
-											return LinFmod(1,144,1670,1,50,L);
+											return LinFmod(1,450,4500,1,50,L);
 										} else if (Lm <= 60) {
-											return LinFmod(1,1670,2500,50,60,L);
+											return LinFmod(1,4500,6800,50,60,L);
 										} else if (Lm <= 65) {
-											return LinFmod(1,2500,3300,60,65,L);
+											return LinFmod(1,6800,9100,60,65,L);
 										} else if (Lm <= 75) {
-											return LinFmod(1,3300,5000,65,75,L);
+											return LinFmod(1,9100,13700,65,75,L);
 										} else if (Lm <= 85) {
-											return LinFmod(1,5000,7500,75,85,L);
+											return LinFmod(1,13700,20600,75,85,L);
 										} else if (Lm <= 95) {
-											return LinFmod(1,7500,10800,85,95,L);
+											return LinFmod(1,20600,29800,85,95,L);
 										} else if (Lm <= 100) {
-											return LinFmod(1,10800,15100,95,100,L);
+											return LinFmod(1,29800,41000,95,100,L);
 										} else if (Lm <= 105) {
-											return LinFmod(1,15100,20100,100,105,L);
+											return LinFmod(1,41000,55000,100,105,L);
 										} else if (Lm <= 115) {
-											return LinFmod(1,22100,30000,106,115,L);
+											return LinFmod(1,61000,83000,106,115,L);
 										} else if (Lm <= 120) {
-											return LinFmod(1,34000,37000,116,120,L);
+											return LinFmod(1,95000,104000,116,120,L);
 										} else if (Lm <= 130) {
-											return LinFmod(1,43000,57000,121,130,L);
+											return LinFmod(1,120000,156000,121,130,L);
 										} else if (Lm <= 140) {
-											return LinFmod(1,65000,113000,131,140,L);
+											return LinFmod(1,179000,312000,131,140,L);
 										} else {
-											return LinFmod(1,130000,227000,141,150,L);
+											return LinFmod(1,360000,620000,141,150,L);
 										}
 									} else {
 										return 0;
 									}
-								} else if (SN == "BRATMITLIGHT") {
+								} else if (SN == "BRATMITMEDIUM") {
 									if (Lm <= 50) {
-										return LinFmod(1,105,1330,1,50,L);
+										return LinFmod(1,144,1670,1,50,L);
 									} else if (Lm <= 60) {
-										return LinFmod(1,1330,2000,50,60,L);
+										return LinFmod(1,1670,2500,50,60,L);
 									} else if (Lm <= 65) {
-										return LinFmod(1,2000,2660,60,65,L);
+										return LinFmod(1,2500,3300,60,65,L);
 									} else if (Lm <= 75) {
-										return LinFmod(1,2660,4000,65,75,L);
+										return LinFmod(1,3300,5000,65,75,L);
 									} else if (Lm <= 85) {
-										return LinFmod(1,4000,6000,75,85,L);
+										return LinFmod(1,5000,7500,75,85,L);
 									} else if (Lm <= 95) {
-										return LinFmod(1,6000,8700,85,95,L);
+										return LinFmod(1,7500,10800,85,95,L);
 									} else if (Lm <= 100) {
-										return LinFmod(1,8700,12100,95,100,L);
+										return LinFmod(1,10800,15100,95,100,L);
 									} else if (Lm <= 105) {
-										return LinFmod(1,12100,16100,100,105,L);
+										return LinFmod(1,15100,20100,100,105,L);
 									} else if (Lm <= 115) {
-										return LinFmod(1,17600,24000,106,115,L);
+										return LinFmod(1,22100,30000,106,115,L);
 									} else if (Lm <= 120) {
-										return LinFmod(1,27300,30000,116,120,L);
+										return LinFmod(1,34000,37000,116,120,L);
 									} else if (Lm <= 130) {
-										return LinFmod(1,35000,45000,121,130,L);
+										return LinFmod(1,43000,57000,121,130,L);
 									} else if (Lm <= 140) {
-										return LinFmod(1,52000,91000,131,140,L);
+										return LinFmod(1,65000,113000,131,140,L);
 									} else {
-										return LinFmod(1,104000,181000,141,150,L);
+										return LinFmod(1,130000,227000,141,150,L);
 									}
 								} else {
 									return 0;
 								}
 							} else {
-								return CalcStat("BRatLow",L);
+								if (Lm <= 50) {
+									return LinFmod(1,105,1330,1,50,L);
+								} else if (Lm <= 60) {
+									return LinFmod(1,1330,2000,50,60,L);
+								} else if (Lm <= 65) {
+									return LinFmod(1,2000,2660,60,65,L);
+								} else if (Lm <= 75) {
+									return LinFmod(1,2660,4000,65,75,L);
+								} else if (Lm <= 85) {
+									return LinFmod(1,4000,6000,75,85,L);
+								} else if (Lm <= 95) {
+									return LinFmod(1,6000,8700,85,95,L);
+								} else if (Lm <= 100) {
+									return LinFmod(1,8700,12100,95,100,L);
+								} else if (Lm <= 105) {
+									return LinFmod(1,12100,16100,100,105,L);
+								} else if (Lm <= 115) {
+									return LinFmod(1,17600,24000,106,115,L);
+								} else if (Lm <= 120) {
+									return LinFmod(1,27300,30000,116,120,L);
+								} else if (Lm <= 130) {
+									return LinFmod(1,35000,45000,121,130,L);
+								} else if (Lm <= 140) {
+									return LinFmod(1,52000,91000,131,140,L);
+								} else {
+									return LinFmod(1,104000,181000,141,150,L);
+								}
 							}
 						} else {
 							if (Lm <= 50) {
-								return LinFmod(1,200,2000,1,50,L);
+								return LinFmod(1,300,3000,1,50,L);
 							} else if (Lm <= 60) {
-								return LinFmod(1,2000,3000,50,60,L);
+								return LinFmod(1,3000,4500,50,60,L);
 							} else if (Lm <= 65) {
-								return LinFmod(1,3000,4000,60,65,L);
+								return LinFmod(1,4500,6000,60,65,L);
 							} else if (Lm <= 75) {
-								return LinFmod(1,4000,6000,65,75,L);
+								return LinFmod(1,6000,9000,65,75,L);
 							} else if (Lm <= 85) {
-								return LinFmod(1,6000,9000,75,85,L);
+								return LinFmod(1,9000,13500,75,85,L);
 							} else if (Lm <= 95) {
-								return LinFmod(1,9000,13000,85,95,L);
+								return LinFmod(1,13500,19500,85,95,L);
 							} else if (Lm <= 100) {
-								return LinFmod(1,13000,18100,95,100,L);
+								return LinFmod(1,19500,27100,95,100,L);
 							} else if (Lm <= 105) {
-								return LinFmod(1,18100,24100,100,105,L);
+								return LinFmod(1,27100,36000,100,105,L);
 							} else if (Lm <= 115) {
-								return LinFmod(1,26500,36000,106,115,L);
+								return LinFmod(1,40000,54000,106,115,L);
 							} else if (Lm <= 120) {
-								return LinFmod(1,41000,45000,116,120,L);
+								return LinFmod(1,62000,68000,116,120,L);
 							} else if (Lm <= 130) {
-								return LinFmod(1,52000,68000,121,130,L);
+								return LinFmod(1,78000,102000,121,130,L);
 							} else if (Lm <= 140) {
-								return LinFmod(1,78000,136000,131,140,L);
+								return LinFmod(1,117000,204000,131,140,L);
 							} else {
-								return LinFmod(1,156000,272000,141,150,L);
+								return LinFmod(1,235000,410000,141,150,L);
 							}
 						}
 					} else if (SN > "BRATPARTBPE") {
-						if (SN < "BURGLARCDARMOURTYPE") {
+						if (SN < "BRAWLERCDHASPOWER") {
 							if (SN < "BRATROUNDED") {
 								if (SN == "BRATPROGB") {
 									if (Lm <= 50) {
@@ -350,14 +350,40 @@ function CalcStat(SName, SLvl, SParam)
 									return 0;
 								}
 							} else if (SN > "BRATROUNDED") {
-								if (SN > "BRAWLERCDARMOURTYPE") {
-									if (SN == "BRAWLERCDHASPOWER") {
-										return 1;
+								if (SN > "BRATSTANDARD") {
+									if (SN == "BRAWLERCDARMOURTYPE") {
+										return 3;
 									} else {
 										return 0;
 									}
-								} else if (SN == "BRAWLERCDARMOURTYPE") {
-									return 3;
+								} else if (SN == "BRATSTANDARD") {
+									if (Lm <= 50) {
+										return LinFmod(1,200,2000,1,50,L);
+									} else if (Lm <= 60) {
+										return LinFmod(1,2000,3000,50,60,L);
+									} else if (Lm <= 65) {
+										return LinFmod(1,3000,4000,60,65,L);
+									} else if (Lm <= 75) {
+										return LinFmod(1,4000,6000,65,75,L);
+									} else if (Lm <= 85) {
+										return LinFmod(1,6000,9000,75,85,L);
+									} else if (Lm <= 95) {
+										return LinFmod(1,9000,13000,85,95,L);
+									} else if (Lm <= 100) {
+										return LinFmod(1,13000,18100,95,100,L);
+									} else if (Lm <= 105) {
+										return LinFmod(1,18100,24100,100,105,L);
+									} else if (Lm <= 115) {
+										return LinFmod(1,26500,36000,106,115,L);
+									} else if (Lm <= 120) {
+										return LinFmod(1,41000,45000,116,120,L);
+									} else if (Lm <= 130) {
+										return LinFmod(1,52000,68000,121,130,L);
+									} else if (Lm <= 140) {
+										return LinFmod(1,78000,136000,131,140,L);
+									} else {
+										return LinFmod(1,156000,272000,141,150,L);
+									}
 								} else {
 									return 0;
 								}
@@ -374,40 +400,40 @@ function CalcStat(SName, SLvl, SParam)
 									return RoundDbl(CalcStat(C,L),-2);
 								}
 							}
-						} else if (SN > "BURGLARCDARMOURTYPE") {
-							if (SN < "CAPTAINCDCANBLOCK") {
-								if (SN > "BURGLARCDHASPOWER") {
-									if (SN == "CAPTAINCDARMOURTYPE") {
-										return 3;
+						} else if (SN > "BRAWLERCDHASPOWER") {
+							if (SN < "CAPTAINCDARMOURTYPE") {
+								if (SN > "BURGLARCDARMOURTYPE") {
+									if (SN == "BURGLARCDHASPOWER") {
+										return 1;
 									} else {
 										return 0;
 									}
-								} else if (SN == "BURGLARCDHASPOWER") {
-									return 1;
+								} else if (SN == "BURGLARCDARMOURTYPE") {
+									return 2;
 								} else {
 									return 0;
 								}
-							} else if (SN > "CAPTAINCDCANBLOCK") {
-								if (SN > "CAPTAINCDHASPOWER") {
-									if (SN == "CHAMPIONCDARMOURTYPE") {
-										return 3;
+							} else if (SN > "CAPTAINCDARMOURTYPE") {
+								if (SN > "CAPTAINCDCANBLOCK") {
+									if (SN == "CAPTAINCDHASPOWER") {
+										return 1;
 									} else {
 										return 0;
 									}
-								} else if (SN == "CAPTAINCDHASPOWER") {
-									return 1;
+								} else if (SN == "CAPTAINCDCANBLOCK") {
+									if (Lm <= 14) {
+										return 0;
+									} else {
+										return 1;
+									}
 								} else {
 									return 0;
 								}
 							} else {
-								if (Lm <= 14) {
-									return 0;
-								} else {
-									return 1;
-								}
+								return 3;
 							}
 						} else {
-							return 2;
+							return 1;
 						}
 					} else {
 						if (Lm <= 50) {
@@ -441,365 +467,265 @@ function CalcStat(SName, SLvl, SParam)
 				} else {
 					return 13;
 				}
-			} else if (SN > "CHAMPIONCDCANBLOCK") {
-				if (SN < "CRITMAGNPRATP") {
-					if (SN < "CRITHITPBONUS") {
-						if (SN < "CRITDEFPRATPA") {
-							if (SN < "CRITDEFPBONUS") {
-								if (SN == "CHAMPIONCDHASPOWER") {
-									return 1;
+			} else if (SN > "CHAMPIONCDARMOURTYPE") {
+				if (SN < "CRITMAGNPPRAT") {
+					if (SN < "CRITDEFPRATPCAPR") {
+						if (SN < "CRITDEFPRATP") {
+							if (SN < "CHAMPIONCDHASPOWER") {
+								if (SN == "CHAMPIONCDCANBLOCK") {
+									if (Lm <= 9) {
+										return 0;
+									} else {
+										return 1;
+									}
 								} else {
 									return 0;
 								}
-							} else if (SN > "CRITDEFPBONUS") {
-								if (SN > "CRITDEFPPRAT") {
-									if (SN == "CRITDEFPRATP") {
-										return CalcPercAB(CalcStat("CritDefPRatPA",L),CalcStat("CritDefPRatPB",L),CalcStat("CritDefPRatPCap",L),N);
+							} else if (SN > "CHAMPIONCDHASPOWER") {
+								if (SN > "CRITDEFPBONUS") {
+									if (SN == "CRITDEFPPRAT") {
+										return CalcRatAB(CalcStat("CritDefPRatPA",L),CalcStat("CritDefPRatPB",L),CalcStat("CritDefPRatPCapR",L),N);
 									} else {
 										return 0;
 									}
-								} else if (SN == "CRITDEFPPRAT") {
-									return CalcRatAB(CalcStat("CritDefPRatPA",L),CalcStat("CritDefPRatPB",L),CalcStat("CritDefPRatPCapR",L),N);
+								} else if (SN == "CRITDEFPBONUS") {
+									return 0;
 								} else {
 									return 0;
 								}
 							} else {
-								return 0;
+								return 1;
 							}
-						} else if (SN > "CRITDEFPRATPA") {
-							if (SN < "CRITDEFPRATPC") {
-								if (SN == "CRITDEFPRATPB") {
-									return CalcStat("BRatRounded",L,"BRatLow");
+						} else if (SN > "CRITDEFPRATP") {
+							if (SN < "CRITDEFPRATPB") {
+								if (SN == "CRITDEFPRATPA") {
+									return 240;
 								} else {
 									return 0;
 								}
-							} else if (SN > "CRITDEFPRATPC") {
-								if (SN > "CRITDEFPRATPCAP") {
-									if (SN == "CRITDEFPRATPCAPR") {
-										return CalcStat("CritDefPRatPB",L)*CalcStat("CritDefPRatPC",L);
+							} else if (SN > "CRITDEFPRATPB") {
+								if (SN > "CRITDEFPRATPC") {
+									if (SN == "CRITDEFPRATPCAP") {
+										return 80;
 									} else {
 										return 0;
 									}
-								} else if (SN == "CRITDEFPRATPCAP") {
-									return 80;
+								} else if (SN == "CRITDEFPRATPC") {
+									return 0.5;
 								} else {
 									return 0;
 								}
 							} else {
-								return 0.5;
-							}
-						} else {
-							return 240;
-						}
-					} else if (SN > "CRITHITPBONUS") {
-						if (SN < "CRITHITPRATPC") {
-							if (SN < "CRITHITPRATP") {
-								if (SN == "CRITHITPPRAT") {
-									return CalcRatAB(CalcStat("CritHitPRatPA",L),CalcStat("CritHitPRatPB",L),CalcStat("CritHitPRatPCapR",L),N);
-								} else {
-									return 0;
-								}
-							} else if (SN > "CRITHITPRATP") {
-								if (SN > "CRITHITPRATPA") {
-									if (SN == "CRITHITPRATPB") {
-										return CalcStat("BRatRounded",L,"BRatLow");
-									} else {
-										return 0;
-									}
-								} else if (SN == "CRITHITPRATPA") {
-									return 75;
-								} else {
-									return 0;
-								}
-							} else {
-								return CalcPercAB(CalcStat("CritHitPRatPA",L),CalcStat("CritHitPRatPB",L),CalcStat("CritHitPRatPCap",L),N);
-							}
-						} else if (SN > "CRITHITPRATPC") {
-							if (SN < "CRITHITPRATPCAPR") {
-								if (SN == "CRITHITPRATPCAP") {
-									return 25;
-								} else {
-									return 0;
-								}
-							} else if (SN > "CRITHITPRATPCAPR") {
-								if (SN > "CRITMAGNPBONUS") {
-									if (SN == "CRITMAGNPPRAT") {
-										return CalcRatAB(CalcStat("CritMagnPRatPA",L),CalcStat("CritMagnPRatPB",L),CalcStat("CritMagnPRatPCapR",L),N);
-									} else {
-										return 0;
-									}
-								} else if (SN == "CRITMAGNPBONUS") {
-									return 0;
-								} else {
-									return 0;
-								}
-							} else {
-								return CalcStat("CritHitPRatPB",L)*CalcStat("CritHitPRatPC",L);
+								return CalcStat("BRatRounded",L,"BRatStandard");
 							}
 						} else {
-							return 0.5;
+							return CalcPercAB(CalcStat("CritDefPRatPA",L),CalcStat("CritDefPRatPB",L),CalcStat("CritDefPRatPCap",L),N);
 						}
-					} else {
-						return 0;
-					}
-				} else if (SN > "CRITMAGNPRATP") {
-					if (SN < "DEVHITPRATPB") {
-						if (SN < "CRITMAGNPRATPCAPR") {
-							if (SN < "CRITMAGNPRATPB") {
-								if (SN == "CRITMAGNPRATPA") {
-									return 225;
+					} else if (SN > "CRITDEFPRATPCAPR") {
+						if (SN < "CRITHITPRATPB") {
+							if (SN < "CRITHITPPRAT") {
+								if (SN == "CRITHITPBONUS") {
+									return 0;
 								} else {
 									return 0;
 								}
-							} else if (SN > "CRITMAGNPRATPB") {
-								if (SN > "CRITMAGNPRATPC") {
-									if (SN == "CRITMAGNPRATPCAP") {
+							} else if (SN > "CRITHITPPRAT") {
+								if (SN > "CRITHITPRATP") {
+									if (SN == "CRITHITPRATPA") {
 										return 75;
 									} else {
 										return 0;
 									}
-								} else if (SN == "CRITMAGNPRATPC") {
+								} else if (SN == "CRITHITPRATP") {
+									return CalcPercAB(CalcStat("CritHitPRatPA",L),CalcStat("CritHitPRatPB",L),CalcStat("CritHitPRatPCap",L),N);
+								} else {
+									return 0;
+								}
+							} else {
+								return CalcRatAB(CalcStat("CritHitPRatPA",L),CalcStat("CritHitPRatPB",L),CalcStat("CritHitPRatPCapR",L),N);
+							}
+						} else if (SN > "CRITHITPRATPB") {
+							if (SN < "CRITHITPRATPCAP") {
+								if (SN == "CRITHITPRATPC") {
 									return 0.5;
 								} else {
 									return 0;
 								}
-							} else {
-								return CalcStat("BRatRounded",L,"BRatCritMagn");
-							}
-						} else if (SN > "CRITMAGNPRATPCAPR") {
-							if (SN < "DEVHITPPRAT") {
-								if (SN == "DEVHITPBONUS") {
-									return 0;
-								} else {
-									return 0;
-								}
-							} else if (SN > "DEVHITPPRAT") {
-								if (SN > "DEVHITPRATP") {
-									if (SN == "DEVHITPRATPA") {
-										return 30;
+							} else if (SN > "CRITHITPRATPCAP") {
+								if (SN > "CRITHITPRATPCAPR") {
+									if (SN == "CRITMAGNPBONUS") {
+										return 0;
 									} else {
 										return 0;
 									}
-								} else if (SN == "DEVHITPRATP") {
-									return CalcPercAB(CalcStat("DevHitPRatPA",L),CalcStat("DevHitPRatPB",L),CalcStat("DevHitPRatPCap",L),N);
+								} else if (SN == "CRITHITPRATPCAPR") {
+									return CalcStat("CritHitPRatPB",L)*CalcStat("CritHitPRatPC",L);
 								} else {
 									return 0;
 								}
 							} else {
-								return CalcRatAB(CalcStat("DevHitPRatPA",L),CalcStat("DevHitPRatPB",L),CalcStat("DevHitPRatPCapR",L),N);
+								return 25;
 							}
 						} else {
-							return CalcStat("CritMagnPRatPB",L)*CalcStat("CritMagnPRatPC",L);
-						}
-					} else if (SN > "DEVHITPRATPB") {
-						if (SN < "EVADEPPRAT") {
-							if (SN < "DEVHITPRATPCAP") {
-								if (SN == "DEVHITPRATPC") {
-									return 0.5;
-								} else {
-									return 0;
-								}
-							} else if (SN > "DEVHITPRATPCAP") {
-								if (SN > "DEVHITPRATPCAPR") {
-									if (SN == "EVADEPBONUS") {
-										return CalcStat("BPEPBonus",L);
-									} else {
-										return 0;
-									}
-								} else if (SN == "DEVHITPRATPCAPR") {
-									return CalcStat("DevHitPRatPB",L)*CalcStat("DevHitPRatPC",L);
-								} else {
-									return 0;
-								}
-							} else {
-								return 10;
-							}
-						} else if (SN > "EVADEPPRAT") {
-							if (SN < "EVADEPRATPB") {
-								if (SN > "EVADEPRATP") {
-									if (SN == "EVADEPRATPA") {
-										return CalcStat("BPEPRatPA",L);
-									} else {
-										return 0;
-									}
-								} else if (SN == "EVADEPRATP") {
-									return CalcStat("BPEPRatP",L,N);
-								} else {
-									return 0;
-								}
-							} else if (SN > "EVADEPRATPB") {
-								if (SN > "EVADEPRATPC") {
-									if (SN == "EVADEPRATPCAP") {
-										return CalcStat("BPEPRatPCap",L);
-									} else {
-										return 0;
-									}
-								} else if (SN == "EVADEPRATPC") {
-									return CalcStat("BPEPRatPC",L);
-								} else {
-									return 0;
-								}
-							} else {
-								return CalcStat("BPEPRatPB",L);
-							}
-						} else {
-							return CalcStat("BPEPPRat",L,N);
+							return CalcStat("BRatRounded",L,"BRatStandard");
 						}
 					} else {
-						return CalcStat("BRatRounded",L,"BRatHigh");
+						return CalcStat("CritDefPRatPB",L)*CalcStat("CritDefPRatPC",L);
 					}
-				} else {
-					return CalcPercAB(CalcStat("CritMagnPRatPA",L),CalcStat("CritMagnPRatPB",L),CalcStat("CritMagnPRatPCap",L),N);
-				}
-			} else {
-				if (Lm <= 9) {
-					return 0;
-				} else {
-					return 1;
-				}
-			}
-		} else if (SN > "EVADEPRATPCAPR") {
-			if (SN < "MITHEAVYPPRAT") {
-				if (SN < "INDMGPRATPCAP") {
-					if (SN < "GUARDIANCDCANBLOCK") {
-						if (SN < "FINESSEPRATPB") {
-							if (SN < "FINESSEPPRAT") {
-								if (SN == "FINESSEPBONUS") {
-									return 0;
+				} else if (SN > "CRITMAGNPPRAT") {
+					if (SN < "DEVHITPRATPA") {
+						if (SN < "CRITMAGNPRATPCAP") {
+							if (SN < "CRITMAGNPRATPA") {
+								if (SN == "CRITMAGNPRATP") {
+									return CalcPercAB(CalcStat("CritMagnPRatPA",L),CalcStat("CritMagnPRatPB",L),CalcStat("CritMagnPRatPCap",L),N);
 								} else {
 									return 0;
 								}
-							} else if (SN > "FINESSEPPRAT") {
-								if (SN > "FINESSEPRATP") {
-									if (SN == "FINESSEPRATPA") {
-										return 150;
-									} else {
-										return 0;
-									}
-								} else if (SN == "FINESSEPRATP") {
-									return CalcPercAB(CalcStat("FinessePRatPA",L),CalcStat("FinessePRatPB",L),CalcStat("FinessePRatPCap",L),N);
-								} else {
-									return 0;
-								}
-							} else {
-								return CalcRatAB(CalcStat("FinessePRatPA",L),CalcStat("FinessePRatPB",L),CalcStat("FinessePRatPCapR",L),N);
-							}
-						} else if (SN > "FINESSEPRATPB") {
-							if (SN < "FINESSEPRATPCAP") {
-								if (SN == "FINESSEPRATPC") {
-									return 0.5;
-								} else {
-									return 0;
-								}
-							} else if (SN > "FINESSEPRATPCAP") {
-								if (SN > "FINESSEPRATPCAPR") {
-									if (SN == "GUARDIANCDARMOURTYPE") {
-										return 3;
-									} else {
-										return 0;
-									}
-								} else if (SN == "FINESSEPRATPCAPR") {
-									return CalcStat("FinessePRatPB",L)*CalcStat("FinessePRatPC",L);
-								} else {
-									return 0;
-								}
-							} else {
-								return 50;
-							}
-						} else {
-							return CalcStat("BRatRounded",L,"BRatLow");
-						}
-					} else if (SN > "GUARDIANCDCANBLOCK") {
-						if (SN < "INDMGPPRAT") {
-							if (SN < "HUNTERCDARMOURTYPE") {
-								if (SN == "GUARDIANCDHASPOWER") {
-									return 1;
-								} else {
-									return 0;
-								}
-							} else if (SN > "HUNTERCDARMOURTYPE") {
-								if (SN > "HUNTERCDHASPOWER") {
-									if (SN == "INDMGPBONUS") {
-										return 0;
-									} else {
-										return 0;
-									}
-								} else if (SN == "HUNTERCDHASPOWER") {
-									return 1;
-								} else {
-									return 0;
-								}
-							} else {
-								return 2;
-							}
-						} else if (SN > "INDMGPPRAT") {
-							if (SN < "INDMGPRATPA") {
-								if (SN == "INDMGPRATP") {
-									return CalcPercAB(CalcStat("InDmgPRatPA",L),CalcStat("InDmgPRatPB",L),CalcStat("InDmgPRatPCap",L),N);
-								} else {
-									return 0;
-								}
-							} else if (SN > "INDMGPRATPA") {
-								if (SN > "INDMGPRATPB") {
-									if (SN == "INDMGPRATPC") {
+							} else if (SN > "CRITMAGNPRATPA") {
+								if (SN > "CRITMAGNPRATPB") {
+									if (SN == "CRITMAGNPRATPC") {
 										return 0.5;
 									} else {
 										return 0;
 									}
-								} else if (SN == "INDMGPRATPB") {
-									return CalcStat("BRatRounded",L,"BRatLow");
+								} else if (SN == "CRITMAGNPRATPB") {
+									return CalcStat("BRatRounded",L,"BRatCritMagn");
 								} else {
 									return 0;
 								}
 							} else {
-								return 1200;
+								return 225;
 							}
-						} else {
-							return CalcRatAB(CalcStat("InDmgPRatPA",L),CalcStat("InDmgPRatPB",L),CalcStat("InDmgPRatPCapR",L),N);
-						}
-					} else {
-						return 1;
-					}
-				} else if (SN > "INDMGPRATPCAP") {
-					if (SN < "LEVELCAP") {
-						if (SN < "INHEALPRATPA") {
-							if (SN < "INHEALPBONUS") {
-								if (SN == "INDMGPRATPCAPR") {
-									return CalcStat("InDmgPRatPB",L)*CalcStat("InDmgPRatPC",L);
+						} else if (SN > "CRITMAGNPRATPCAP") {
+							if (SN < "DEVHITPBONUS") {
+								if (SN == "CRITMAGNPRATPCAPR") {
+									return CalcStat("CritMagnPRatPB",L)*CalcStat("CritMagnPRatPC",L);
 								} else {
 									return 0;
 								}
-							} else if (SN > "INHEALPBONUS") {
-								if (SN > "INHEALPPRAT") {
-									if (SN == "INHEALPRATP") {
-										return CalcPercAB(CalcStat("InHealPRatPA",L),CalcStat("InHealPRatPB",L),CalcStat("InHealPRatPCap",L),N);
+							} else if (SN > "DEVHITPBONUS") {
+								if (SN > "DEVHITPPRAT") {
+									if (SN == "DEVHITPRATP") {
+										return CalcPercAB(CalcStat("DevHitPRatPA",L),CalcStat("DevHitPRatPB",L),CalcStat("DevHitPRatPCap",L),N);
 									} else {
 										return 0;
 									}
-								} else if (SN == "INHEALPPRAT") {
-									return CalcRatAB(CalcStat("InHealPRatPA",L),CalcStat("InHealPRatPB",L),CalcStat("InHealPRatPCapR",L),N);
+								} else if (SN == "DEVHITPPRAT") {
+									return CalcRatAB(CalcStat("DevHitPRatPA",L),CalcStat("DevHitPRatPB",L),CalcStat("DevHitPRatPCapR",L),N);
 								} else {
 									return 0;
 								}
 							} else {
 								return 0;
 							}
-						} else if (SN > "INHEALPRATPA") {
-							if (SN < "INHEALPRATPC") {
-								if (SN == "INHEALPRATPB") {
-									return CalcStat("BRatRounded",L,"BRatLow");
+						} else {
+							return 75;
+						}
+					} else if (SN > "DEVHITPRATPA") {
+						if (SN < "EVADEPBONUS") {
+							if (SN < "DEVHITPRATPC") {
+								if (SN == "DEVHITPRATPB") {
+									return CalcStat("BRatRounded",L,"BRatDevHit");
 								} else {
 									return 0;
 								}
-							} else if (SN > "INHEALPRATPC") {
-								if (SN > "INHEALPRATPCAP") {
-									if (SN == "INHEALPRATPCAPR") {
-										return CalcStat("InHealPRatPB",L)*CalcStat("InHealPRatPC",L);
+							} else if (SN > "DEVHITPRATPC") {
+								if (SN > "DEVHITPRATPCAP") {
+									if (SN == "DEVHITPRATPCAPR") {
+										return CalcStat("DevHitPRatPB",L)*CalcStat("DevHitPRatPC",L);
 									} else {
 										return 0;
 									}
-								} else if (SN == "INHEALPRATPCAP") {
-									return 25;
+								} else if (SN == "DEVHITPRATPCAP") {
+									return 10;
+								} else {
+									return 0;
+								}
+							} else {
+								return 0.5;
+							}
+						} else if (SN > "EVADEPBONUS") {
+							if (SN < "EVADEPRATPA") {
+								if (SN > "EVADEPPRAT") {
+									if (SN == "EVADEPRATP") {
+										return CalcStat("BPEPRatP",L,N);
+									} else {
+										return 0;
+									}
+								} else if (SN == "EVADEPPRAT") {
+									return CalcStat("BPEPPRat",L,N);
+								} else {
+									return 0;
+								}
+							} else if (SN > "EVADEPRATPA") {
+								if (SN > "EVADEPRATPB") {
+									if (SN == "EVADEPRATPC") {
+										return CalcStat("BPEPRatPC",L);
+									} else {
+										return 0;
+									}
+								} else if (SN == "EVADEPRATPB") {
+									return CalcStat("BPEPRatPB",L);
+								} else {
+									return 0;
+								}
+							} else {
+								return CalcStat("BPEPRatPA",L);
+							}
+						} else {
+							return CalcStat("BPEPBonus",L);
+						}
+					} else {
+						return 30;
+					}
+				} else {
+					return CalcRatAB(CalcStat("CritMagnPRatPA",L),CalcStat("CritMagnPRatPB",L),CalcStat("CritMagnPRatPCapR",L),N);
+				}
+			} else {
+				return 3;
+			}
+		} else if (SN > "EVADEPRATPCAP") {
+			if (SN < "MITHEAVYPBONUS") {
+				if (SN < "INDMGPRATPC") {
+					if (SN < "GUARDIANCDARMOURTYPE") {
+						if (SN < "FINESSEPRATPA") {
+							if (SN < "FINESSEPBONUS") {
+								if (SN == "EVADEPRATPCAPR") {
+									return CalcStat("BPEPRatPCapR",L);
+								} else {
+									return 0;
+								}
+							} else if (SN > "FINESSEPBONUS") {
+								if (SN > "FINESSEPPRAT") {
+									if (SN == "FINESSEPRATP") {
+										return CalcPercAB(CalcStat("FinessePRatPA",L),CalcStat("FinessePRatPB",L),CalcStat("FinessePRatPCap",L),N);
+									} else {
+										return 0;
+									}
+								} else if (SN == "FINESSEPPRAT") {
+									return CalcRatAB(CalcStat("FinessePRatPA",L),CalcStat("FinessePRatPB",L),CalcStat("FinessePRatPCapR",L),N);
+								} else {
+									return 0;
+								}
+							} else {
+								return 0;
+							}
+						} else if (SN > "FINESSEPRATPA") {
+							if (SN < "FINESSEPRATPC") {
+								if (SN == "FINESSEPRATPB") {
+									return CalcStat("BRatRounded",L,"BRatStandard");
+								} else {
+									return 0;
+								}
+							} else if (SN > "FINESSEPRATPC") {
+								if (SN > "FINESSEPRATPCAP") {
+									if (SN == "FINESSEPRATPCAPR") {
+										return CalcStat("FinessePRatPB",L)*CalcStat("FinessePRatPC",L);
+									} else {
+										return 0;
+									}
+								} else if (SN == "FINESSEPRATPCAP") {
+									return 50;
 								} else {
 									return 0;
 								}
@@ -807,60 +733,188 @@ function CalcStat(SName, SLvl, SParam)
 								return 0.5;
 							}
 						} else {
-							return 75;
+							return 150;
 						}
-					} else if (SN > "LEVELCAP") {
-						if (SN < "MARINERCDARMOURTYPE") {
-							if (SN < "LOREMASTERCDHASPOWER") {
-								if (SN == "LOREMASTERCDARMOURTYPE") {
+					} else if (SN > "GUARDIANCDARMOURTYPE") {
+						if (SN < "INDMGPBONUS") {
+							if (SN < "GUARDIANCDHASPOWER") {
+								if (SN == "GUARDIANCDCANBLOCK") {
 									return 1;
 								} else {
 									return 0;
 								}
-							} else if (SN > "LOREMASTERCDHASPOWER") {
-								if (SN > "LVLEXPCOST") {
-									if (SN == "LVLEXPCOSTTOT") {
+							} else if (SN > "GUARDIANCDHASPOWER") {
+								if (SN > "HUNTERCDARMOURTYPE") {
+									if (SN == "HUNTERCDHASPOWER") {
+										return 1;
+									} else {
+										return 0;
+									}
+								} else if (SN == "HUNTERCDARMOURTYPE") {
+									return 2;
+								} else {
+									return 0;
+								}
+							} else {
+								return 1;
+							}
+						} else if (SN > "INDMGPBONUS") {
+							if (SN < "INDMGPRATP") {
+								if (SN == "INDMGPPRAT") {
+									return CalcRatAB(CalcStat("InDmgPRatPA",L),CalcStat("InDmgPRatPB",L),CalcStat("InDmgPRatPCapR",L),N);
+								} else {
+									return 0;
+								}
+							} else if (SN > "INDMGPRATP") {
+								if (SN > "INDMGPRATPA") {
+									if (SN == "INDMGPRATPB") {
+										return CalcStat("BRatRounded",L,"BRatStandard");
+									} else {
+										return 0;
+									}
+								} else if (SN == "INDMGPRATPA") {
+									return 1200;
+								} else {
+									return 0;
+								}
+							} else {
+								return CalcPercAB(CalcStat("InDmgPRatPA",L),CalcStat("InDmgPRatPB",L),CalcStat("InDmgPRatPCap",L),N);
+							}
+						} else {
+							return 0;
+						}
+					} else {
+						return 3;
+					}
+				} else if (SN > "INDMGPRATPC") {
+					if (SN < "INHEALPRATPCAPR") {
+						if (SN < "INHEALPRATP") {
+							if (SN < "INDMGPRATPCAPR") {
+								if (SN == "INDMGPRATPCAP") {
+									return 400;
+								} else {
+									return 0;
+								}
+							} else if (SN > "INDMGPRATPCAPR") {
+								if (SN > "INHEALPBONUS") {
+									if (SN == "INHEALPPRAT") {
+										return CalcRatAB(CalcStat("InHealPRatPA",L),CalcStat("InHealPRatPB",L),CalcStat("InHealPRatPCapR",L),N);
+									} else {
+										return 0;
+									}
+								} else if (SN == "INHEALPBONUS") {
+									return 0;
+								} else {
+									return 0;
+								}
+							} else {
+								return CalcStat("InDmgPRatPB",L)*CalcStat("InDmgPRatPC",L);
+							}
+						} else if (SN > "INHEALPRATP") {
+							if (SN < "INHEALPRATPB") {
+								if (SN == "INHEALPRATPA") {
+									return 75;
+								} else {
+									return 0;
+								}
+							} else if (SN > "INHEALPRATPB") {
+								if (SN > "INHEALPRATPC") {
+									if (SN == "INHEALPRATPCAP") {
+										return 25;
+									} else {
+										return 0;
+									}
+								} else if (SN == "INHEALPRATPC") {
+									return 0.5;
+								} else {
+									return 0;
+								}
+							} else {
+								return CalcStat("BRatRounded",L,"BRatStandard");
+							}
+						} else {
+							return CalcPercAB(CalcStat("InHealPRatPA",L),CalcStat("InHealPRatPB",L),CalcStat("InHealPRatPCap",L),N);
+						}
+					} else if (SN > "INHEALPRATPCAPR") {
+						if (SN < "LVLEXPCOSTTOT") {
+							if (SN < "LOREMASTERCDARMOURTYPE") {
+								if (SN == "LEVELCAP") {
+									return 140;
+								} else {
+									return 0;
+								}
+							} else if (SN > "LOREMASTERCDARMOURTYPE") {
+								if (SN > "LOREMASTERCDHASPOWER") {
+									if (SN == "LVLEXPCOST") {
 										if (Lm <= 1) {
 											return 0;
+										} else if (Lm <= 5) {
+											return RoundDbl(12.5*L*L+12.5666666666667*L+24.8666666666667);
+										} else if (Lm <= 10) {
+											return RoundDbl(33.8*L*L-179.48*L+452.6);
+										} else if (Lm <= 15) {
+											return RoundDbl(55.05*L*L-583.77*L+2370.5);
+										} else if (Lm <= 20) {
+											return RoundDbl(76.2*L*L-1196.96*L+6809);
+										} else if (Lm <= 25) {
+											return RoundDbl(97.4*L*L-2023*L+14849.8);
+										} else if (Lm <= 30) {
+											return RoundDbl(118.7*L*L-3066.02 *L+27612.8);
+										} else if (Lm <= 35) {
+											return RoundDbl(139.95*L*L-4319.23*L+46084.1);
+										} else if (Lm <= 40) {
+											return RoundDbl(161.2*L*L-5785.04*L+71356.2);
+										} else if (Lm <= 45) {
+											return RoundDbl(182.5*L*L-7467.38*L+104569.8);
+										} else if (Lm <= 50) {
+											return RoundDbl(203.8*L*L-9363.48*L+146761.8);
+										} else if (Lm <= 55) {
+											return RoundDbl(225.05*L*L-11467.77*L+198851.3);
+										} else if (Lm <= 60) {
+											return RoundDbl(246.3*L*L-13784.46*L+261988);
+										} else if (Lm <= 70) {
+											return RoundDbl(ExpFmod(CalcStat("LvlExpCost",60),61,5.071,L,undefined,3.485));
+										} else if (Lm <= 75) {
+											return RoundDbl(ExpFmod(CalcStat("LvlExpCost",70),71,5.072,L,undefined,-0.95));
 										} else {
-											return CalcStat("LvlExpCostTot",L-1)+CalcStat("LvlExpCost",L);
+											return ExpFmod(CalcStat("LvlExpCost",75),76,5,L,0,-0.5);
 										}
 									} else {
 										return 0;
 									}
-								} else if (SN == "LVLEXPCOST") {
-									if (Lm <= 1) {
-										return 0;
-									} else if (Lm <= 5) {
-										return RoundDbl(12.5*L*L+12.5666666666667*L+24.8666666666667);
-									} else if (Lm <= 10) {
-										return RoundDbl(33.8*L*L-179.48*L+452.6);
-									} else if (Lm <= 15) {
-										return RoundDbl(55.05*L*L-583.77*L+2370.5);
-									} else if (Lm <= 20) {
-										return RoundDbl(76.2*L*L-1196.96*L+6809);
-									} else if (Lm <= 25) {
-										return RoundDbl(97.4*L*L-2023*L+14849.8);
-									} else if (Lm <= 30) {
-										return RoundDbl(118.7*L*L-3066.02 *L+27612.8);
-									} else if (Lm <= 35) {
-										return RoundDbl(139.95*L*L-4319.23*L+46084.1);
-									} else if (Lm <= 40) {
-										return RoundDbl(161.2*L*L-5785.04*L+71356.2);
-									} else if (Lm <= 45) {
-										return RoundDbl(182.5*L*L-7467.38*L+104569.8);
-									} else if (Lm <= 50) {
-										return RoundDbl(203.8*L*L-9363.48*L+146761.8);
-									} else if (Lm <= 55) {
-										return RoundDbl(225.05*L*L-11467.77*L+198851.3);
-									} else if (Lm <= 60) {
-										return RoundDbl(246.3*L*L-13784.46*L+261988);
-									} else if (Lm <= 70) {
-										return RoundDbl(ExpFmod(CalcStat("LvlExpCost",60),61,5.071,L,undefined,3.485));
-									} else if (Lm <= 75) {
-										return RoundDbl(ExpFmod(CalcStat("LvlExpCost",70),71,5.072,L,undefined,-0.95));
+								} else if (SN == "LOREMASTERCDHASPOWER") {
+									return 1;
+								} else {
+									return 0;
+								}
+							} else {
+								return 1;
+							}
+						} else if (SN > "LVLEXPCOSTTOT") {
+							if (SN < "MINSTRELCDARMOURTYPE") {
+								if (SN > "MARINERCDARMOURTYPE") {
+									if (SN == "MARINERCDHASPOWER") {
+										return 1;
 									} else {
-										return ExpFmod(CalcStat("LvlExpCost",75),76,5,L,0,-0.5);
+										return 0;
+									}
+								} else if (SN == "MARINERCDARMOURTYPE") {
+									return 2;
+								} else {
+									return 0;
+								}
+							} else if (SN > "MINSTRELCDARMOURTYPE") {
+								if (SN > "MINSTRELCDCANBLOCK") {
+									if (SN == "MINSTRELCDHASPOWER") {
+										return 1;
+									} else {
+										return 0;
+									}
+								} else if (SN == "MINSTRELCDCANBLOCK") {
+									if (Lm <= 19) {
+										return 0;
+									} else {
+										return 1;
 									}
 								} else {
 									return 0;
@@ -868,124 +922,102 @@ function CalcStat(SName, SLvl, SParam)
 							} else {
 								return 1;
 							}
-						} else if (SN > "MARINERCDARMOURTYPE") {
-							if (SN < "MINSTRELCDCANBLOCK") {
-								if (SN > "MARINERCDHASPOWER") {
-									if (SN == "MINSTRELCDARMOURTYPE") {
-										return 1;
-									} else {
-										return 0;
-									}
-								} else if (SN == "MARINERCDHASPOWER") {
-									return 1;
-								} else {
-									return 0;
-								}
-							} else if (SN > "MINSTRELCDCANBLOCK") {
-								if (SN > "MINSTRELCDHASPOWER") {
-									if (SN == "MITHEAVYPBONUS") {
-										return 0;
-									} else {
-										return 0;
-									}
-								} else if (SN == "MINSTRELCDHASPOWER") {
-									return 1;
-								} else {
-									return 0;
-								}
-							} else {
-								if (Lm <= 19) {
-									return 0;
-								} else {
-									return 1;
-								}
-							}
 						} else {
-							return 2;
+							if (Lm <= 1) {
+								return 0;
+							} else {
+								return CalcStat("LvlExpCostTot",L-1)+CalcStat("LvlExpCost",L);
+							}
 						}
 					} else {
-						return 140;
+						return CalcStat("InHealPRatPB",L)*CalcStat("InHealPRatPC",L);
 					}
 				} else {
-					return 400;
+					return 0.5;
 				}
-			} else if (SN > "MITHEAVYPPRAT") {
+			} else if (SN > "MITHEAVYPBONUS") {
 				if (SN < "MITMEDIUMPRATPC") {
-					if (SN < "MITLIGHTPRATPA") {
-						if (SN < "MITHEAVYPRATPCAP") {
-							if (SN < "MITHEAVYPRATPA") {
-								if (SN == "MITHEAVYPRATP") {
-									return CalcPercAB(CalcStat("MitHeavyPRatPA",L),CalcStat("MitHeavyPRatPB",L),CalcStat("MitHeavyPRatPCap",L),N);
+					if (SN < "MITLIGHTPRATP") {
+						if (SN < "MITHEAVYPRATPC") {
+							if (SN < "MITHEAVYPRATP") {
+								if (SN == "MITHEAVYPPRAT") {
+									return CalcRatAB(CalcStat("MitHeavyPRatPA",L),CalcStat("MitHeavyPRatPB",L),CalcStat("MitHeavyPRatPCapR",L),N);
 								} else {
 									return 0;
 								}
-							} else if (SN > "MITHEAVYPRATPA") {
-								if (SN > "MITHEAVYPRATPB") {
-									if (SN == "MITHEAVYPRATPC") {
-										return 0.5;
+							} else if (SN > "MITHEAVYPRATP") {
+								if (SN > "MITHEAVYPRATPA") {
+									if (SN == "MITHEAVYPRATPB") {
+										return CalcStat("BRatRounded",L,"BRatMitHeavy");
 									} else {
 										return 0;
 									}
-								} else if (SN == "MITHEAVYPRATPB") {
-									return CalcStat("BRatRounded",L,"BRatMitHeavy");
+								} else if (SN == "MITHEAVYPRATPA") {
+									return 180;
 								} else {
 									return 0;
 								}
 							} else {
-								return 180;
+								return CalcPercAB(CalcStat("MitHeavyPRatPA",L),CalcStat("MitHeavyPRatPB",L),CalcStat("MitHeavyPRatPCap",L),N);
 							}
-						} else if (SN > "MITHEAVYPRATPCAP") {
-							if (SN < "MITLIGHTPBONUS") {
-								if (SN == "MITHEAVYPRATPCAPR") {
-									return CalcStat("MitHeavyPRatPB",L)*CalcStat("MitHeavyPRatPC",L);
+						} else if (SN > "MITHEAVYPRATPC") {
+							if (SN < "MITHEAVYPRATPCAPR") {
+								if (SN == "MITHEAVYPRATPCAP") {
+									return 60;
 								} else {
 									return 0;
 								}
-							} else if (SN > "MITLIGHTPBONUS") {
-								if (SN > "MITLIGHTPPRAT") {
-									if (SN == "MITLIGHTPRATP") {
-										return CalcPercAB(CalcStat("MitLightPRatPA",L),CalcStat("MitLightPRatPB",L),CalcStat("MitLightPRatPCap",L),N);
+							} else if (SN > "MITHEAVYPRATPCAPR") {
+								if (SN > "MITLIGHTPBONUS") {
+									if (SN == "MITLIGHTPPRAT") {
+										return CalcRatAB(CalcStat("MitLightPRatPA",L),CalcStat("MitLightPRatPB",L),CalcStat("MitLightPRatPCapR",L),N);
 									} else {
 										return 0;
 									}
-								} else if (SN == "MITLIGHTPPRAT") {
-									return CalcRatAB(CalcStat("MitLightPRatPA",L),CalcStat("MitLightPRatPB",L),CalcStat("MitLightPRatPCapR",L),N);
+								} else if (SN == "MITLIGHTPBONUS") {
+									return 0;
 								} else {
 									return 0;
 								}
 							} else {
-								return 0;
+								return CalcStat("MitHeavyPRatPB",L)*CalcStat("MitHeavyPRatPC",L);
 							}
 						} else {
-							return 60;
+							return 0.5;
 						}
-					} else if (SN > "MITLIGHTPRATPA") {
-						if (SN < "MITMEDIUMPBONUS") {
-							if (SN < "MITLIGHTPRATPC") {
-								if (SN == "MITLIGHTPRATPB") {
-									return CalcStat("BRatRounded",L,"BRatMitLight");
+					} else if (SN > "MITLIGHTPRATP") {
+						if (SN < "MITLIGHTPRATPCAPR") {
+							if (SN < "MITLIGHTPRATPB") {
+								if (SN == "MITLIGHTPRATPA") {
+									return 120;
 								} else {
 									return 0;
 								}
-							} else if (SN > "MITLIGHTPRATPC") {
-								if (SN > "MITLIGHTPRATPCAP") {
-									if (SN == "MITLIGHTPRATPCAPR") {
-										return CalcStat("MitLightPRatPB",L)*CalcStat("MitLightPRatPC",L);
+							} else if (SN > "MITLIGHTPRATPB") {
+								if (SN > "MITLIGHTPRATPC") {
+									if (SN == "MITLIGHTPRATPCAP") {
+										return 40;
 									} else {
 										return 0;
 									}
-								} else if (SN == "MITLIGHTPRATPCAP") {
-									return 40;
+								} else if (SN == "MITLIGHTPRATPC") {
+									return 0.5;
 								} else {
 									return 0;
 								}
 							} else {
-								return 0.5;
+								return CalcStat("BRatRounded",L,"BRatMitLight");
 							}
-						} else if (SN > "MITMEDIUMPBONUS") {
+						} else if (SN > "MITLIGHTPRATPCAPR") {
 							if (SN < "MITMEDIUMPRATP") {
-								if (SN == "MITMEDIUMPPRAT") {
-									return CalcRatAB(CalcStat("MitMediumPRatPA",L),CalcStat("MitMediumPRatPB",L),CalcStat("MitMediumPRatPCapR",L),N);
+								if (SN > "MITMEDIUMPBONUS") {
+									if (SN == "MITMEDIUMPPRAT") {
+										return CalcRatAB(CalcStat("MitMediumPRatPA",L),CalcStat("MitMediumPRatPB",L),CalcStat("MitMediumPRatPCapR",L),N);
+									} else {
+										return 0;
+									}
+								} else if (SN == "MITMEDIUMPBONUS") {
+									return 0;
 								} else {
 									return 0;
 								}
@@ -1005,10 +1037,10 @@ function CalcStat(SName, SLvl, SParam)
 								return CalcPercAB(CalcStat("MitMediumPRatPA",L),CalcStat("MitMediumPRatPB",L),CalcStat("MitMediumPRatPCap",L),N);
 							}
 						} else {
-							return 0;
+							return CalcStat("MitLightPRatPB",L)*CalcStat("MitLightPRatPC",L);
 						}
 					} else {
-						return 120;
+						return CalcPercAB(CalcStat("MitLightPRatPA",L),CalcStat("MitLightPRatPB",L),CalcStat("MitLightPRatPCap",L),N);
 					}
 				} else if (SN > "MITMEDIUMPRATPC") {
 					if (SN < "OUTDMGPRATPCAPR") {
@@ -1054,7 +1086,7 @@ function CalcStat(SName, SLvl, SParam)
 									return 0;
 								}
 							} else {
-								return CalcStat("BRatRounded",L,"BRatMedium");
+								return CalcStat("BRatRounded",L,"BRatExtra");
 							}
 						} else {
 							return CalcPercAB(CalcStat("OutDmgPRatPA",L),CalcStat("OutDmgPRatPB",L),CalcStat("OutDmgPRatPCap",L),N);
@@ -1111,7 +1143,7 @@ function CalcStat(SName, SLvl, SParam)
 								return CalcStat("OutHealPRatPB",L)*CalcStat("OutHealPRatPC",L);
 							}
 						} else {
-							return CalcStat("BRatRounded",L,"BRatHigh");
+							return CalcStat("BRatRounded",L,"BRatOutHeal");
 						}
 					} else {
 						return CalcStat("OutDmgPRatPB",L)*CalcStat("OutDmgPRatPC",L);
@@ -1120,10 +1152,10 @@ function CalcStat(SName, SLvl, SParam)
 					return 0.5;
 				}
 			} else {
-				return CalcRatAB(CalcStat("MitHeavyPRatPA",L),CalcStat("MitHeavyPRatPB",L),CalcStat("MitHeavyPRatPCapR",L),N);
+				return 0;
 			}
 		} else {
-			return CalcStat("BPEPRatPCapR",L);
+			return CalcStat("BPEPRatPCap",L);
 		}
 	} else if (SN > "PARRYPRATP") {
 		if (SN < "PHYMITHPRATPB") {
@@ -1664,7 +1696,7 @@ function CalcStat(SName, SLvl, SParam)
 							} else if (SN > "PNTMPRESIST") {
 								if (SN > "PROGBARMOUR") {
 									if (SN == "PROGBBPE") {
-										return CalcStat("BRatProgB",L,"BRatLow");
+										return CalcStat("BRatProgB",L,"BRatStandard");
 									} else {
 										return 0;
 									}
@@ -1719,7 +1751,7 @@ function CalcStat(SName, SLvl, SParam)
 								}
 							}
 						} else {
-							return CalcStat("BRatProgB",L,"BRatMedium");
+							return CalcStat("BRatProgB",L,"BRatExtra");
 						}
 					} else if (SN > "RESISTPRATP") {
 						if (SN < "RESISTPRATPCAPR") {
@@ -1742,7 +1774,7 @@ function CalcStat(SName, SLvl, SParam)
 									return 0;
 								}
 							} else {
-								return CalcStat("BRatRounded",L,"BRatMedium");
+								return CalcStat("BRatRounded",L,"BRatExtra");
 							}
 						} else if (SN > "RESISTPRATPCAPR") {
 							if (SN < "RUNEKEEPERCDHASPOWER") {
