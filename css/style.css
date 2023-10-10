@@ -686,6 +686,10 @@ main {
 	margin-top: 15px;
 }
 
+#level-sel-form {
+	height: 40px;
+}
+
 #level-sel-range {
 	width: 500px;
 }
