@@ -134,13 +134,31 @@ function InitPenetrations() {
 			if (penlevel != null && penlevel != 'onlvl') {
 				calclvl = Number(penlevel);
 				switch(pentype) {
-					case 'hidden2':
+					case 'armourpen1':
+						penarmour = CalcStat('TPenArmour',calclvl,1);
+						penarmourlow = penarmour;
+						break;
+					case 'armourpen2':
+						penarmour = CalcStat('TPenArmour',calclvl,2);
+						penarmourlow = penarmour;
+						break;
+					case 'armourpen3':
+						penarmour = CalcStat('TPenArmour',calclvl,3);
+						penarmourlow = penarmour;
+						break;
+					case 'allpen1':
+						penarmour = CalcStat('TPenArmour',calclvl,1);
+						penarmourlow = penarmour;
+						penbpe = CalcStat('TPenBPE',calclvl,1);
+						penresist = CalcStat('TPenResist',calclvl,1);
+						break;
+					case 'allpen2':
 						penarmour = CalcStat('TPenArmour',calclvl,2);
 						penarmourlow = penarmour;
 						penbpe = CalcStat('TPenBPE',calclvl,2);
 						penresist = CalcStat('TPenResist',calclvl,2);
 						break;
-					case 'hidden3':
+					case 'allpen3':
 						penarmour = CalcStat('TPenArmour',calclvl,3);
 						penarmourlow = penarmour;
 						penbpe = CalcStat('TPenBPE',calclvl,3);
@@ -179,13 +197,31 @@ function UpdatePenetrations() {
 			if (penlevel == 'onlvl') {
 				calclvl = PlayerLvl;
 				switch(pentype) {
-					case 'hidden2':
+					case 'armourpen1':
+						penarmour = CalcStat('TPenArmour',calclvl,1);
+						penarmourlow = penarmour;
+						break;
+					case 'armourpen2':
+						penarmour = CalcStat('TPenArmour',calclvl,2);
+						penarmourlow = penarmour;
+						break;
+					case 'armourpen3':
+						penarmour = CalcStat('TPenArmour',calclvl,3);
+						penarmourlow = penarmour;
+						break;
+					case 'allpen1':
+						penarmour = CalcStat('TPenArmour',calclvl,1);
+						penarmourlow = penarmour;
+						penbpe = CalcStat('TPenBPE',calclvl,1);
+						penresist = CalcStat('TPenResist',calclvl,1);
+						break;
+					case 'allpen2':
 						penarmour = CalcStat('TPenArmour',calclvl,2);
 						penarmourlow = penarmour;
 						penbpe = CalcStat('TPenBPE',calclvl,2);
 						penresist = CalcStat('TPenResist',calclvl,2);
 						break;
-					case 'hidden3':
+					case 'allpen3':
 						penarmour = CalcStat('TPenArmour',calclvl,3);
 						penarmourlow = penarmour;
 						penbpe = CalcStat('TPenBPE',calclvl,3);
