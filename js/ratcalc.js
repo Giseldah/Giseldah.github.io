@@ -1,7 +1,5 @@
 // Created by Giseldah
 
-var DblCalcDev = 0.00000001;
-
 var PercTags = [
 	'crithit',
 	'devhit',
@@ -163,12 +161,6 @@ function InitPenetrations() {
 						penarmourlow = penarmour;
 						penbpe = CalcStat('TPenBPE',calclvl,3);
 						penresist = CalcStat('TPenResist',calclvl,3);
-						break;
-					case 'enhiii':
-						penarmour = CalcStat('T2PenArmour',calclvl);
-						penarmourlow = penarmour;
-						penbpe = CalcStat('T2PenBPE',calclvl);
-						penresist = CalcStat('T2PenResist',calclvl);
 				}
 			}
 			if (penlevel != 'onlvl') 
@@ -226,12 +218,6 @@ function UpdatePenetrations() {
 						penarmourlow = penarmour;
 						penbpe = CalcStat('TPenBPE',calclvl,3);
 						penresist = CalcStat('TPenResist',calclvl,3);
-						break;
-					case 'enhiii':
-						penarmour = CalcStat('T2PenArmour',calclvl);
-						penarmourlow = penarmour;
-						penbpe = CalcStat('T2PenBPE',calclvl);
-						penresist = CalcStat('T2PenResist',calclvl);
 				}
 				lis[i].setAttribute('title',pentitle.replace(/#bpepen/g,Math.round(penbpe+DblCalcDev).toString()).replace(/#resistpen/g,Math.round(penresist+DblCalcDev).toString()).replace(/#armourpen/g,Math.round(penarmour+DblCalcDev).toString()));
 				Penetrations[pi].armourpen = penarmour;
